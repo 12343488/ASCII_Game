@@ -38,11 +38,9 @@ void Object::Move(Vec2 Direction)
 
 		if (((Object*)screen->screen[Destination.x][Destination.y].Occupant)->ID == Tile::GraficsID::EMPTY)
 		{
-			screen->screen[Coord.x][Coord.y].Occupant = new Object(Tile::GraficsID::EMPTY, Coord);
+			(Object*)screen->screen[Coord.x][Coord.y].Occupant)->ID = Tile::GraficsID::EMPTY;
 
 			Coord = Destination;
-
-			((Object*)screen->screen[Coord.x][Coord.y].Occupant)->~Object();
 
 			screen->screen[Coord.x][Coord.y].Occupant = this;
 		}
