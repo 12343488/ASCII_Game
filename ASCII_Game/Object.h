@@ -10,7 +10,6 @@ struct Object
 	Tile::GraficsID ID;
 	Vec2 Coord;
 	Screen* screen;
-	inline static std::deque<Object*> Objects;
 
 	Object(Tile::GraficsID ID, Vec2 Coord, Screen& screen);
 	Object(Tile::GraficsID ID, Vec2 Coord);

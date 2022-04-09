@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
+#include <deque>
 
 #include "Vec2.h"
 
@@ -41,6 +42,8 @@ struct Screen
 {
 	//[x, y]
 	std::vector<std::vector<Tile>> screen;
+
+	std::deque<void*> Objects;
 
 	Vec2 Limits;
 	int ScreenHeight = 10; //screen height é o tanto de linhas puladas a cada "frame"

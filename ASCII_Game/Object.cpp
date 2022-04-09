@@ -4,7 +4,7 @@ Object::Object(Tile::GraficsID ID, Vec2 Coord, Screen& screen) : ID(ID), Coord(C
 {	
 	screen.screen[Coord.x][Coord.y].Occupant = this;
 
-	Objects.push_back(this);
+	screen.Objects.push_back(this);
 }
 
 Object::Object(Tile::GraficsID ID, Vec2 Coord) : ID(ID), Coord(Coord), screen(NULL)

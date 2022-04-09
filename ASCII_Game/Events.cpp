@@ -4,11 +4,11 @@ void commands(std::string& command, Screen& screen)
 {
 	Object* Player = NULL;
 
-	for (Object* it : Object::Objects)
+	for (void* it : screen.Objects)
 	{
-		if (it->ID == Tile::GraficsID::PLAYER)
+		if (((Object*)it)->ID == Tile::GraficsID::PLAYER)
 		{
-			Player = it;
+			Player = ((Object*)it);
 			break;
 		}
 	}
