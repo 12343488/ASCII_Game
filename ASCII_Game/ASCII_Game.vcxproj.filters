@@ -15,39 +15,48 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ASCII_Game.cpp">
+    <ClCompile Include="SRC\ASCII_Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vec2.cpp">
+    <ClCompile Include="SRC\Vec2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Screen.cpp">
+    <ClCompile Include="SRC\Screen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
+    <ClCompile Include="SRC\Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="regulated input.h">
+    <ClCompile Include="SRC\regulated input.h">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events.cpp">
+    <ClCompile Include="SRC\Events.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="regulated input.cpp">
+    <ClCompile Include="SRC\regulated input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\PathFinding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\PathFindig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Screen.h">
+    <ClInclude Include="SRC\Screen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vec2.h">
+    <ClInclude Include="SRC\Vec2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
+    <ClInclude Include="SRC\Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events.h">
+    <ClInclude Include="SRC\Events.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRC\PathFindig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

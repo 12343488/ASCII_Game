@@ -1,38 +1,38 @@
 #include "Screen.h"
 #include "Object.h"
 
-Tile::Tile(Vec2& Coord, std::array<Vec2, 4>& Reachable) : Coord(Coord), Occupant(new Object(Tile::GraficsID::EMPTY, Coord))
+Tile::Tile(Vec2& Coord, std::array<std::pair<Vec2, float>, 4>& Reachable) : Coord(Coord), Occupant(new Object(Tile::GraficsID::EMPTY, Coord))
 {	
 	ReachableNeighbours = Reachable;
 }
 
 Tile::Tile(Vec2& Coord, Vec2& Limits) : Coord(Coord), Occupant(new Object(Tile::GraficsID::EMPTY, Coord))
 {
-	ReachableNeighbours = {
-			Vec2(Coord.x + 1.0f	 , Coord.y),
-			Vec2(Coord.x		 , Coord.y + 1.0f),
-			Vec2(Coord.x - 1.0f	 , Coord.y),
-			Vec2(Coord.x		 , Coord.y - 1.0f)
+	ReachableNeighbours = std::array<std::pair<Vec2, float>, 4> {
+			std::pair<Vec2, float> {Vec2(Coord.x + 1.0f  , Coord.y		 ), 0.0f},
+			std::pair<Vec2, float> {Vec2(Coord.x		 , Coord.y + 1.0f), 0.0f},
+			std::pair<Vec2, float> {Vec2(Coord.x - 1.0f  , Coord.y		 ), 0.0f},
+			std::pair<Vec2, float> {Vec2(Coord.x		 , Coord.y - 1.0f), 0.0f}
 	};
 
 	if (Coord.x == Limits.x - 1.0f)
 	{
-		ReachableNeighbours[0] = Vec2(0.0f	 , Coord.y		  ); 
+		ReachableNeighbours[0] = { Vec2(0.0f		   , Coord.y		 ), 0.0f };
 	}
 
 	if (Coord.y == Limits.y - 1.0f)
 	{
-		ReachableNeighbours[1] = Vec2(Coord.x, 0.0f			  );
+		ReachableNeighbours[1] = { Vec2(Coord.x		   , 0.0f			 ), 0.0f };
 	}
 
 	if (Coord.x == 0)
 	{
-		ReachableNeighbours[2] = Vec2(Limits.x - 1.0f, Coord.y);
+		ReachableNeighbours[2] = { Vec2(Limits.x - 1.0f, Coord.y		 ), 0.0f };
 	}
 
 	if (Coord.y == 0)
 	{
-		ReachableNeighbours[3] = Vec2(Coord.x, Limits.y - 1.0f);
+		ReachableNeighbours[3] = { Vec2(Coord.x		   , Limits.y - 1.0f ), 0.0f };
 	}
 }
 
@@ -83,6 +83,9 @@ const std::string Grafics(Tile::GraficsID ID)
 		break;
 	case Tile::GraficsID::WALL:
 		return "|#|";
+		break;
+	case Tile::GraficsID::ENEMY:
+		return " @ ";
 		break;
 	}
 

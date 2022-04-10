@@ -15,12 +15,13 @@ struct Tile
 	{
 		EMPTY = 0,
 		PLAYER,
-		WALL
+		WALL,
+		ENEMY
 	};
 
 	Vec2 Coord;
 
-	std::array<Vec2, 4> ReachableNeighbours;
+	std::array<std::pair<Vec2, float>, 4> ReachableNeighbours;
 
 	/*
 		Vec2(Coord.x + 1.0f	, Coord.y		),	>
@@ -32,7 +33,7 @@ struct Tile
 	void* Occupant;
 
 	//basicamente não vai se usar esses construtores no meio do jogo
-	Tile(Vec2& Coord, std::array<Vec2, 4>& Reachable);
+	Tile(Vec2& Coord, std::array<std::pair<Vec2, float>, 4>& Reachable);
 	Tile(Vec2& Coord, Vec2& Limits);
 };
 
@@ -43,7 +44,9 @@ struct Screen
 	//[x, y]
 	std::vector<std::vector<Tile>> screen;
 
+	//Objects armazena void* mas a verdade~é utilizado apenas para objects, então se lembre de SEMPRE castar para Object* antes de usa-lo
 	std::deque<void*> Objects;
+	std::deque<void*> SelfMovObjects;
 
 	Vec2 Limits;
 	int ScreenHeight = 10; //screen height é o tanto de linhas puladas a cada "frame"

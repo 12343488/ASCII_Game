@@ -1,6 +1,6 @@
 #include "Events.h"
 
-void commands(std::string& command, Screen& screen)
+void commands(std::string& command, Screen& screen, std::vector<void*> Variables)
 {
 	Object* Player = NULL;
 
@@ -37,36 +37,30 @@ void commands(std::string& command, Screen& screen)
 				command = command[0];
 			}
 
-			for (int i = 0; (i < command.size()) || (i < 2); i++)
+			if (command[0] == 'W' || command[0] == 'w')
 			{
-				if (command[i] == 'W' || command[i] == 'w')
-				{
-					directions.y = 1;
-					decided = true;
-					break;
-				}
-
-				if (command[i] == 'S' || command[i] == 's')
-				{
-					directions.y = -1;
-					decided = true;
-					break;
-				}
-
-				if (command[i] == 'D' || command[i] == 'd')
-				{
-					directions.x = 1;
-					decided = true;
-					break;
-				}
-
-				if (command[i] == 'A' || command[i] == 'a')
-				{
-					directions.x = -1;
-					decided = true;
-					break;
-				}
+				directions.y = 1;
+				decided = true;
 			}
+
+			if (command[0] == 'S' || command[0] == 's')
+			{
+				directions.y = -1;
+				decided = true;
+			}
+
+			if (command[0] == 'D' || command[0] == 'd')
+			{
+				directions.x = 1;
+				decided = true;
+			}
+
+			if (command[0] == 'A' || command[0] == 'a')
+			{
+				directions.x = -1;
+				decided = true;
+			}
+		
 
 			if (Player != NULL)
 			{
@@ -115,6 +109,29 @@ void commands(std::string& command, Screen& screen)
 
 		return;
 	}
-
 #endif // DEBUG
+
+	if (command == "show path result")
+	{
+		if (*((int*)Variables[0]) == 1)
+		{
+			*((int*)Variables[0]) = 0;
+		}
+		else
+		{
+			*((int*)Variables[0]) = 1;
+		}
+	}
+
+	if (command == "show path")
+	{
+		if (*((int*)Variables[0]) == 2)
+		{
+			*((int*)Variables[0]) = 0;
+		}
+		else
+		{
+			*((int*)Variables[0]) = 2;
+		}
+	}
 }

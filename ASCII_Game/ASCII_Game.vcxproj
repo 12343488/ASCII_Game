@@ -134,6 +134,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SRC</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,19 +144,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ASCII_Game.cpp" />
-    <ClCompile Include="Events.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="regulated input.cpp" />
-    <ClCompile Include="regulated input.h" />
-    <ClCompile Include="Screen.cpp" />
-    <ClCompile Include="Vec2.cpp" />
+    <ClCompile Include="SRC\ASCII_Game.cpp" />
+    <ClCompile Include="SRC\Events.cpp" />
+    <ClCompile Include="SRC\Object.cpp" />
+    <ClCompile Include="SRC\PathFindig.cpp" />
+    <ClCompile Include="SRC\PathFinding.cpp" />
+    <ClCompile Include="SRC\regulated input.cpp" />
+    <ClCompile Include="SRC\regulated input.h" />
+    <ClCompile Include="SRC\Screen.cpp" />
+    <ClCompile Include="SRC\Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Events.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="Screen.h" />
-    <ClInclude Include="Vec2.h" />
+    <ClInclude Include="SRC\Events.h" />
+    <ClInclude Include="SRC\Object.h" />
+    <ClInclude Include="SRC\PathFindig.h" />
+    <ClInclude Include="SRC\Screen.h" />
+    <ClInclude Include="SRC\Vec2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
