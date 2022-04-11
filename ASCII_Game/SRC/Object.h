@@ -30,9 +30,10 @@ struct SelfMovableObject : public Object
 {
 	std::list<TileExplored> Path;
 
-
+	int CouldntMove;
 
 	SelfMovableObject(Tile::GraficsID ID, Vec2 Coord, Screen& screen);
 
 	void ShowPath();
+	void Move();
 };

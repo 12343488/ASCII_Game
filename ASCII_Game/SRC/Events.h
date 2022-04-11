@@ -8,4 +8,4 @@
 #include "Vec2.h"
 #include "regulated input.h"
 
-void commands(std::string& command, Screen& screen, std::vector<void*> Variables);
+void commands(Screen& screen, std::vector<void*> Variables);

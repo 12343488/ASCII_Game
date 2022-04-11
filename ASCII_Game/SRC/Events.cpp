@@ -1,6 +1,6 @@
 #include "Events.h"
 
-void commands(std::string& command, Screen& screen, std::vector<void*> Variables)
+void commands(Screen& screen, std::vector<void*> Variables)
 {
 	Object* Player = NULL;
 
@@ -13,49 +13,41 @@ void commands(std::string& command, Screen& screen, std::vector<void*> Variables
 		}
 	}
 
-	if (command == "move")
+	if (*((std::string*)Variables[0]) == "move")
 	{
 		bool decided = false;
 
 		while (!decided)
 		{
 			std::cout << "\n\nQual Direção?\n\nDigite H para ajuda\n\n> ";
-			std::getline(std::cin, command);
+			std::getline(std::cin, *((std::string*)Variables[0]));
 
-			if (command == "H" || command == "h")
+			if (*((std::string*)Variables[0]) == "H" || *((std::string*)Variables[0]) == "h")
 			{
 				std::cout << "\n\nW - para ir para frente / subir\nS - para ir para tras / descer\nA - para ir para a esquerda\nD - para ir para a direita\n\n";
 			}
 
 			Vec2 directions(0, 0);
 
-			if ((((command[0] == 'W') || (command[0] == 'w') || (command[0] == 'S') || (command[0] == 's'))  &&
-				 ((command[1] == 'W') || (command[1] == 'w') || (command[1] == 'S') || (command[1] == 's'))) ||
-				(((command[0] == 'D') || (command[0] == 'd') || (command[0] == 'A') || (command[0] == 'a'))  &&
-				 ((command[1] == 'D') || (command[1] == 'd') || (command[1] == 'A') || (command[1] == 'a'))))
-			{
-				command = command[0];
-			}
-
-			if (command[0] == 'W' || command[0] == 'w')
+			if ((*((std::string*)Variables[0]))[0] == 'W' || (*((std::string*)Variables[0]))[0] == 'w')
 			{
 				directions.y = 1;
 				decided = true;
 			}
 
-			if (command[0] == 'S' || command[0] == 's')
+			if ((*((std::string*)Variables[0]))[0] == 'S' || (*((std::string*)Variables[0]))[0] == 's')
 			{
 				directions.y = -1;
 				decided = true;
 			}
 
-			if (command[0] == 'D' || command[0] == 'd')
+			if ((*((std::string*)Variables[0]))[0] == 'D' || (*((std::string*)Variables[0]))[0] == 'd')
 			{
 				directions.x = 1;
 				decided = true;
 			}
 
-			if (command[0] == 'A' || command[0] == 'a')
+			if ((*((std::string*)Variables[0]))[0] == 'A' || (*((std::string*)Variables[0]))[0] == 'a')
 			{
 				directions.x = -1;
 				decided = true;
@@ -71,14 +63,14 @@ void commands(std::string& command, Screen& screen, std::vector<void*> Variables
 	}
 
 #ifdef _DEBUG
-	if (command == "teleport")
+	if (*((std::string*)Variables[0]) == "teleport")
 	{
 
 		Vec2 Destination;
 
 		std::cout << "\n\ndigite a coordenada x:\n> ";
-		std::getline(std::cin, command);
-		ValidadeInput(command, Destination.x);
+		std::getline(std::cin, (*((std::string*)Variables[0])));
+		ValidadeInput((*((std::string*)Variables[0])), Destination.x);
 
 		if (Destination.x >= screen.Limits.x)
 		{
@@ -91,8 +83,8 @@ void commands(std::string& command, Screen& screen, std::vector<void*> Variables
 		}
 
 		std::cout << "\ndigite a coordenada y:\n> ";
-		std::getline(std::cin, command);
-		ValidadeInput(command, Destination.y);
+		std::getline(std::cin, (*((std::string*)Variables[0])));
+		ValidadeInput((*((std::string*)Variables[0])), Destination.y);
 
 		if (Destination.y >= screen.Limits.y)
 		{
@@ -111,27 +103,39 @@ void commands(std::string& command, Screen& screen, std::vector<void*> Variables
 	}
 #endif // DEBUG
 
-	if (command == "show path result")
+	if ((*((std::string*)Variables[0])) == "show path result")
 	{
-		if (*((int*)Variables[0]) == 1)
+		if (*((int*)Variables[1]) == 1)
 		{
-			*((int*)Variables[0]) = 0;
+			*((int*)Variables[1]) = 0;
 		}
 		else
 		{
-			*((int*)Variables[0]) = 1;
+			*((int*)Variables[1]) = 1;
 		}
 	}
 
-	if (command == "show path")
+	if ((*((std::string*)Variables[0])) == "show path")
 	{
-		if (*((int*)Variables[0]) == 2)
+		if (*((int*)Variables[1]) == 2)
 		{
-			*((int*)Variables[0]) = 0;
+			*((int*)Variables[1]) = 0;
 		}
 		else
 		{
-			*((int*)Variables[0]) = 2;
+			*((int*)Variables[1]) = 2;
+		}
+	}
+
+	if ((*((std::string*)Variables[0])) == "show all paths")
+	{
+		if (*((int*)Variables[1]) == 3)
+		{
+			*((int*)Variables[1]) = 0;
+		}
+		else
+		{
+			*((int*)Variables[1]) = 3;
 		}
 	}
 }

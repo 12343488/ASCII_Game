@@ -79,7 +79,7 @@ const std::string Grafics(Tile::GraficsID ID)
 		return " + ";
 		break;
 	case Tile::GraficsID::PLAYER:
-		return " O ";
+		return "<O>";
 		break;
 	case Tile::GraficsID::WALL:
 		return "|#|";

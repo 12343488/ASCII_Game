@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32127.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ASCII_Game", "ASCII_Game\ASCII_Game.vcxproj", "{69E0F5A8-C25C-4961-8205-B4A691476E54}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPEN_GL", "OPEN_GL\OPEN_GL.vcxproj", "{7FDB39CC-3ADA-476E-A534-1809DE9A8574}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{69E0F5A8-C25C-4961-8205-B4A691476E54}.Release|x64.Build.0 = Release|x64
 		{69E0F5A8-C25C-4961-8205-B4A691476E54}.Release|x86.ActiveCfg = Release|Win32
 		{69E0F5A8-C25C-4961-8205-B4A691476E54}.Release|x86.Build.0 = Release|Win32
+		{7FDB39CC-3ADA-476E-A534-1809DE9A8574}.Debug|x64.ActiveCfg = Debug|x64
+		{7FDB39CC-3ADA-476E-A534-1809DE9A8574}.Debug|x64.Build.0 = Debug|x64
+		{7FDB39CC-3ADA-476E-A534-1809DE9A8574}.Debug|x86.ActiveCfg = Debug|Win32
+		{7FDB39CC-3ADA-476E-A534-1809DE9A8574}.Debug|x86.Build.0 = Debug|Win32
+		{7FDB39CC-3ADA-476E-A534-1809DE9A8574}.Release|x64.ActiveCfg = Release|x64
+		{7FDB39CC-3ADA-476E-A534-1809DE9A8574}.Release|x64.Build.0 = Release|x64
+		{7FDB39CC-3ADA-476E-A534-1809DE9A8574}.Release|x86.ActiveCfg = Release|Win32
+		{7FDB39CC-3ADA-476E-A534-1809DE9A8574}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

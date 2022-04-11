@@ -36,9 +36,6 @@
     <ClCompile Include="SRC\regulated input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRC\PathFinding.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SRC\PathFindig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

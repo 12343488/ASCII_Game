@@ -20,4 +20,6 @@ struct TileExplored
 	float Coast();
 };
 
-void AstarPathFinding(Vec2 Target, void* Searcher, Screen& screen, int show);
+void AstarPathFinding(Vec2 Target, void* Searcher, Screen& screen, int show, int* RecalculatedPath);
+
+void ShowPaths(Screen& screen);

@@ -2,6 +2,8 @@
 
 #include "Object.h"
 
+#define CalculationPerFrame 5
+
 TileExplored::TileExplored(Vec2 Coord, Vec2 Parent, int steps, float modifier, float distance) :  Coord(Coord), Parent(Parent), steps(steps), modifier(modifier), distance(distance)
 {		}
 
@@ -10,7 +12,7 @@ float TileExplored::Coast()
 	return steps + modifier + distance;
 }
 
-void AstarPathFinding(Vec2 Target, void* Searcher, Screen& screen, int show)
+void AstarPathFinding(Vec2 Target, void* Searcher, Screen& screen, int show, int* RecalculatedPath)
 {
 	std::unordered_map<Vec2, TileExplored> Explored;
 	std::unordered_map<Vec2, TileExplored> Frontier;
@@ -21,36 +23,66 @@ void AstarPathFinding(Vec2 Target, void* Searcher, Screen& screen, int show)
 	{
 		if (((SelfMovableObject*)Searcher)->Path.size() == 0)
 		{
-			Frontier.emplace(((Object*)Searcher)->Coord, TileExplored(((Object*)Searcher)->Coord, NULL, 0, 0, ((Object*)Searcher)->Coord.Distance(Target)));
+			if ((*RecalculatedPath) < CalculationPerFrame)
+			{
+				Frontier.emplace(((Object*)Searcher)->Coord, TileExplored(((Object*)Searcher)->Coord, Vec2(-1, -1), 0, 0, ((Object*)Searcher)->Coord.Distance(Target)));
 
-			std::cout << "começando do zero 1";
+				std::cout << "começando do zero 1\t";
+
+				(*RecalculatedPath)++;
+			}
 		}
 		else
 		{
-			if (((SelfMovableObject*)Searcher)->Path.back().Coord.Distance(Target) < 5)
+			if (((SelfMovableObject*)Searcher)->Path.back().Coord.Distance(Target) < 5 && ((SelfMovableObject*)Searcher)->CouldntMove < 3)
 			{
 				UsingOldInformation = true;
 
+				Explored.emplace(((Object*)Searcher)->Coord, TileExplored(((Object*)Searcher)->Coord, Vec2(-1, -1), 0, 0, ((Object*)Searcher)->Coord.Distance(Target)));
 				Frontier.emplace(((SelfMovableObject*)Searcher)->Path.back().Coord, ((SelfMovableObject*)Searcher)->Path.back());
 
 				for (auto& i : ((SelfMovableObject*)Searcher)->Path)
 				{
-					Explored.emplace(i.Coord, i);
+					if (i.Parent == Vec2(-1))
+					{
+						Explored.emplace(i.Coord, TileExplored(i.Coord, Vec2(-1, -1), i.steps, i.modifier, i.distance));
+					}
+					else
+					{
+						Explored.emplace(i.Coord, i);
+					}
 				}
+
+				std::cout << "utilizando path antigo\t";
 			}
 			else
 			{
-				Frontier.emplace(((Object*)Searcher)->Coord, TileExplored(((Object*)Searcher)->Coord, NULL, 0, 0, ((Object*)Searcher)->Coord.Distance(Target)));
+				if ((*RecalculatedPath) < CalculationPerFrame)
+				{
+					Frontier.emplace(((Object*)Searcher)->Coord, TileExplored(((Object*)Searcher)->Coord, Vec2(-1, -1), 0, 0, ((Object*)Searcher)->Coord.Distance(Target)));
 
-				std::cout << "começando do zero 2";
+					std::cout << "começando do zero 2\t";
+
+					(*RecalculatedPath)++;
+				}
 			}
 		}
 	}
 	else
 	{
-		Frontier.emplace(((Object*)Searcher)->Coord, TileExplored(((Object*)Searcher)->Coord, NULL, 0, 0, ((Object*)Searcher)->Coord.Distance(Target)));
+		if ((*RecalculatedPath) < CalculationPerFrame)
+		{
+			Frontier.emplace(((Object*)Searcher)->Coord, TileExplored(((Object*)Searcher)->Coord, Vec2(-1, -1), 0, 0, ((Object*)Searcher)->Coord.Distance(Target)));
 
-		std::cout << "começando do zero 3";
+			std::cout << "começando do zero 3\t";
+
+			(* RecalculatedPath)++;
+		}
+	}
+
+	if ((* RecalculatedPath) > CalculationPerFrame)
+	{
+		std::cout << "numero de calculos por frame exedido\t";
 	}
 
 	bool Found = false;
@@ -190,31 +222,119 @@ void AstarPathFinding(Vec2 Target, void* Searcher, Screen& screen, int show)
 				}
 
 				std::cout << "\n";
-			}
+		}
 	}
 
-	std::list<TileExplored> Path;
-	bool PathTraced = false;
-
-	Vec2 LastCoord = Target;
-
-	if (Explored.find(LastCoord) != Explored.end())
+	if (Found)
 	{
+		std::list<TileExplored> Path;
+		bool PathTraced = false;
+
+		Vec2 LastCoord = Target;
+
 		while (!PathTraced)
 		{
-			Path.emplace_front(Explored.at(LastCoord));
+			if (Explored.find(LastCoord) == Explored.end())
+			{
+				std::cout << "FUDEU" << std::endl;
+				return;
+			}
 
-			if (Explored.at(LastCoord).Parent != NULL)
-				LastCoord = Explored.at(LastCoord).Parent;
+			if (Explored.at(LastCoord).Coord != ((SelfMovableObject*)Searcher)->Coord)
+			{
+				Path.push_front(Explored.at(LastCoord));
+				LastCoord = Path.front().Parent;
+			}
 			else
+			{
 				PathTraced = true;
+			}
 		}
-		Path.pop_back();
+
+		Path.front().Parent = Vec2(-1);
+
+		if (((Object*)Searcher)->type == Object::Type::SELFMOVABLE)
+		{
+			if (!UsingOldInformation)
+				((SelfMovableObject*)Searcher)->Path = Path;
+
+		}
+
+		if (show == 2)
+
+		{
+			for (int i = 0; i < screen.ScreenHeight; i++)
+			{
+				std::cout << "\n";
+			}
+
+			for (int y = screen.Limits.y - 1; y >= 0; y--)
+			{
+				std::vector<TileExplored> InColun;
+
+				for (auto& i : Path)
+				{
+					if (i.Coord.y == y)
+					{
+						bool ocupied = false;
+						for (auto& i2 : screen.Objects)
+						{
+							if (i.Coord == ((Object*)i2)->Coord)
+							{
+								ocupied = true;
+							}
+						}
+						if (!ocupied)
+							InColun.push_back(i);
+					}
+				}
+
+				for (int x = 0; x < screen.Limits.x; x++)
+				{
+					bool Showed = false;
+
+					for (auto& i : InColun)
+					{
+						if (i.Coord.x == x)
+						{
+							std::cout << std::setw(4) << (int)i.Coast();
+							Showed = true;
+						}
+					}
+
+					if (!Showed)
+						std::cout << std::setw(4) << Grafics(((Object*)screen.screen[x][y].Occupant)->ID);
+				}
+
+				std::cout << "\n";
+			}
+		}
+	}
+	else
+	{
+		((SelfMovableObject*)Searcher)->Path.clear();
+
+		if (show == 2)
+		{
+			screen.Display();
+		}
 	}
 
-	if(show == 2)
+	
+}
 
-	{
+void ShowPaths(Screen& screen)
+{
+		std::unordered_map<Vec2, Vec2> Paths;
+
+		for (auto& i1 : screen.SelfMovObjects)
+		{
+			for (auto& i2 : ((SelfMovableObject*)i1)->Path)
+			{
+				Paths.emplace(i2.Coord, i2.Coord);
+			}
+		}
+
 		for (int i = 0; i < screen.ScreenHeight; i++)
 		{
 			std::cout << "\n";
@@ -222,22 +342,23 @@ void AstarPathFinding(Vec2 Target, void* Searcher, Screen& screen, int show)
 
 		for (int y = screen.Limits.y - 1; y >= 0; y--)
 		{
-			std::vector<TileExplored> InColun;
+			std::vector<Vec2> InColun;
 
-			for (auto& i : Path)
+			for (auto& i : Paths)
 			{
-				if (i.Coord.y == y)
+				if (i.first.y == y)
 				{
 					bool ocupied = false;
+
 					for (auto& i2 : screen.Objects)
 					{
-						if (i.Coord == ((Object*)i2)->Coord)
+						if (i.first == ((Object*)i2)->Coord)
 						{
 							ocupied = true;
 						}
 					}
 					if (!ocupied)
-						InColun.push_back(i);
+						InColun.push_back(i.first);
 				}
 			}
 
@@ -247,9 +368,9 @@ void AstarPathFinding(Vec2 Target, void* Searcher, Screen& screen, int show)
 
 				for (auto& i : InColun)
 				{
-					if (i.Coord.x == x)
+					if (i.x == x)
 					{
-						std::cout << std::setw(4) << (int)i.Coast();
+						std::cout << std::setw(4) << " p ";
 						Showed = true;
 					}
 				}
@@ -260,16 +381,5 @@ void AstarPathFinding(Vec2 Target, void* Searcher, Screen& screen, int show)
 
 			std::cout << "\n";
 		}
-	}
-
-	if (Found)
-	{
-		if (((Object*)Searcher)->type == Object::Type::SELFMOVABLE)
-		{
-			if (!UsingOldInformation)
-				((SelfMovableObject*)Searcher)->Path = Path;
-
-		}
-	}
 }
 

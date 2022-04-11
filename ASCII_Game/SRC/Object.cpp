@@ -38,9 +38,11 @@ void Object::Move(Vec2 Direction)
 
 		if (((Object*)screen->screen[Destination.x][Destination.y].Occupant)->ID == Tile::GraficsID::EMPTY)
 		{
-			(Object*)screen->screen[Coord.x][Coord.y].Occupant)->ID = Tile::GraficsID::EMPTY;
+			screen->screen[Coord.x][Coord.y].Occupant = new Object(Tile::GraficsID::EMPTY, Coord);
 
 			Coord = Destination;
+
+			((Object*)screen->screen[Coord.x][Coord.y].Occupant)->~Object();
 
 			screen->screen[Coord.x][Coord.y].Occupant = this;
 		}
@@ -66,7 +68,7 @@ void Object::Teleport(Vec2 Destination)
 #endif // _DEBUG
 }
 
-SelfMovableObject::SelfMovableObject(Tile::GraficsID ID, Vec2 Coord, Screen& screen) : Object(ID, Coord, screen)
+SelfMovableObject::SelfMovableObject(Tile::GraficsID ID, Vec2 Coord, Screen& screen) : Object(ID, Coord, screen), CouldntMove(0)
 {
 	type = Object::Type::SELFMOVABLE;
 
@@ -119,5 +121,29 @@ void SelfMovableObject::ShowPath()
 		}
 
 		std::cout << "\n";
+	}
+}
+
+void SelfMovableObject::Move()
+{
+	if (!Path.empty())
+	{
+		if (((Object*)screen->screen[Path.front().Coord.x][Path.front().Coord.y].Occupant)->ID == Tile::GraficsID::EMPTY)
+		{
+			screen->screen[Coord.x][Coord.y].Occupant = new Object(Tile::GraficsID::EMPTY, Coord);
+
+			Coord = Path.front().Coord;
+
+			((Object*)screen->screen[Coord.x][Coord.y].Occupant)->~Object();
+
+			screen->screen[Coord.x][Coord.y].Occupant = this;
+
+			CouldntMove = 0;
+			Path.pop_front();
+		}
+		else
+		{
+			CouldntMove++;
+		}
 	}
 }
